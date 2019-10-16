@@ -24,5 +24,8 @@
     "request": "^2.88.0",
     "requestretry": "^4.0.2",
     "sinon": "^7.5.0"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "^1.1.2"
   }
 }

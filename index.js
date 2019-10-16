@@ -1,6 +1,13 @@
+const {PubSub} = require('@google-cloud/pubsub');
 const crypto = require('crypto');
-const SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
 
+const SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
+const TOPIC_NAME = process.env.GCP_TOPIC_NAME;
+
+// Creates a client
+const pubsub = new PubSub();
+
+// Calculate the digest using the Shopify Secret (ENV VAR)
 var getDigest = (secret, rawBody) => {
 
   // let jsonString = JSON.stringify(body);
@@ -13,7 +20,18 @@ var getDigest = (secret, rawBody) => {
   return digest;
 }
 
-var shopify = (req, res) => {
+async function publishMessage(data) {
+
+  // Publishes the message as a string, e.g. "Hello, world!" or JSON.stringify(someObject)
+  const dataBuffer = Buffer.from(data);
+
+  const messageId = await pubsub.topic(TOPIC_NAME).publish(dataBuffer);
+  console.log(`Message ${messageId} published.`);
+  return messageId;
+}
+
+// Implementation of the HTTP(S) API
+async function shopify(req, res) {
   switch (req.method) {
     case 'GET':
       res.status(200);
@@ -32,10 +50,14 @@ var shopify = (req, res) => {
       if (shopDigest != calcDigest) {
         res.status(403);
         res.send({error: 'Bad HMAC'});
-        break;
+      } else {
+        var messageId = await publishMessage(req.rawBody);
+        res.status(200);
+        res.send({
+          status: 'ok',
+          messageId: messageId
+        });
       }
-      res.status(200);
-      res.send({status: 'ok'});
       break;
 
     default:
