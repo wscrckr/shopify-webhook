@@ -2,7 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 
-const {getDigest} = require('../lib/digest');
+const {getDigest} = require('..');
 
 const DIGEST_CHECK = process.env.SHOPIFY_WEBHOOK_DIGEST_CHECK;
 const SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;

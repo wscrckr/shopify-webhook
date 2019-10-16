@@ -1,7 +1,19 @@
-const {getDigest} = require('./lib/digest');
+const crypto = require('crypto');
 const SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
 
-exports.shopify = (req, res) => {
+var getDigest = (secret, rawBody) => {
+
+  // let jsonString = JSON.stringify(body);
+  // console.log('Body length:' + jsonString.length)
+
+  let digest = crypto.createHmac("sha256", secret)
+      .update(rawBody, 'utf8', 'hex')
+      .digest('base64');
+  
+  return digest;
+}
+
+var shopify = (req, res) => {
   switch (req.method) {
     case 'GET':
       res.status(200);
@@ -31,3 +43,6 @@ exports.shopify = (req, res) => {
       res.send({error: `Invalid method: ${req.method}`});
   }
 };
+
+exports.getDigest = getDigest;
+exports.shopify = shopify;
