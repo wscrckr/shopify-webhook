@@ -5,17 +5,20 @@ const path = require('path');
 
 const {shopify} = require('..');
 
+
+
 describe('Shopify webhook unit test', () => {
+  var res = {};
+  before(() => {
+    res.status = sinon.spy();
+    res.send = sinon.spy();
+  });
+  
   it('Should respond to GET', () => {
     const req = {
       method: 'GET'
     }
 
-    const res = {
-      status: sinon.stub(),
-      send: sinon.stub()
-    }
-  
     // Call webhook
     shopify(req, res);
   
@@ -31,16 +34,16 @@ describe('Shopify webhook unit test', () => {
     const req = {
       method: 'POST',
       headers: {
-        'X-Shopify-Hmac-Sha256': digest,
-        'X-Shopify-API-Version': '2019-10'
+        'x-shopify-hmac-sha256': digest,
+        'x-shopify-API-version': '2019-10'
       },
       rawBody: body,
     }
 
-    const res = {
-      status: sinon.stub(),
-      send: sinon.stub()
-    }
+    // const res = {
+    //   status: sinon.stub(),
+    //   send: sinon.stub()
+    // }
   
     // Call webhook
     shopify(req, res);

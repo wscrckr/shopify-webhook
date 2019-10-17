@@ -49,8 +49,8 @@ describe('Shopify HTTP integration test', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-Shopify-Hmac-Sha256': process.env.SHOPIFY_WEBHOOK_DIGEST_CHECK,
-        'X-Shopify-API-Version': '2019-10'
+        'x-shopify-hmac-sha256': process.env.SHOPIFY_WEBHOOK_DIGEST_CHECK,
+        'x-shopify-api-version': '2019-10'
       },
       body: SAMPLE_BODY,
       retryDelay: 200

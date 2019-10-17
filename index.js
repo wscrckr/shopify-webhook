@@ -1,6 +1,7 @@
 const {PubSub} = require('@google-cloud/pubsub');
 const crypto = require('crypto');
 
+require('dotenv').config()
 const SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
 const TOPIC_NAME = process.env.GCP_TOPIC_NAME;
 
@@ -42,10 +43,10 @@ async function shopify(req, res) {
       var shopDigest = req.headers['x-shopify-hmac-sha256'];
       var calcDigest = getDigest(SECRET, req.rawBody);
 
-      console.log('Raw body len: ', req.rawBody.length);
-      console.log(req.rawBody.toString());
-      console.log('Shop digst: ', shopDigest);
-      console.log('Calculated: ', calcDigest);
+      // console.log('Raw body len: ', req.rawBody.length);
+      // console.log(req.rawBody.toString());
+      // console.log('Shop digst: ', shopDigest);
+      // console.log('Calculated: ', calcDigest);
 
       if (shopDigest != calcDigest) {
         res.status(403);
