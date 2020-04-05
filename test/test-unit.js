@@ -5,8 +5,6 @@ const path = require('path');
 
 const {shopify} = require('..');
 
-
-
 describe('Shopify webhook unit test', () => {
   var res = {};
   before(() => {
@@ -39,11 +37,6 @@ describe('Shopify webhook unit test', () => {
       },
       rawBody: body,
     }
-
-    // const res = {
-    //   status: sinon.stub(),
-    //   send: sinon.stub()
-    // }
   
     // Call webhook
     shopify(req, res);
